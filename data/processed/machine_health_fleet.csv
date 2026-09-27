@@ -1,0 +1,8 @@
+machine_id,machine_name,feeder_id,machine_type,latest_health_score,rolling_24h_health_score,health_status,diagnostic_message,current_temperature_c,current_vibration_mms,current_imbalance_pct,power_deviation_pct
+FURNACE_01,Induction Billet Heating Furnace,FDR_05,INDUCTION_FURNACE,75.0,75.5,WARNING,Possible mechanical/electrical issue detected. Inspection recommended.,77.57,0.81,2.32,2.62
+COMP_01,Rotary Screw Air Compressor,FDR_04,AIR_COMPRESSOR,87.5,84.4,NORMAL,Operating parameters within standard manufacturer tolerance.,62.24,2.14,2.09,-3.36
+PUMP_01,Chilled Water Circulation Pump,FDR_03,COOLING_PUMP,93.5,97.8,NORMAL,Operating parameters within standard manufacturer tolerance.,39.65,1.34,3.05,10.02
+MOTOR_01,CNC Machining Center,FDR_01,CNC_MACHINING,99.6,99.6,NORMAL,Operating parameters within standard manufacturer tolerance.,37.38,1.17,0.92,5.34
+LINE_01,Conveyor & Final Assembly Line,FDR_06,CONVEYOR_LINE,100.0,99.7,NORMAL,Operating parameters within standard manufacturer tolerance.,29.57,0.64,0.56,-2.17
+AUX_01,"Plant Utilities, Exhaust & Lighting",FDR_07,UTILITY_AUX,100.0,98.5,NORMAL,Operating parameters within standard manufacturer tolerance.,26.84,0.32,1.57,3.38
+MOTOR_02,Hydraulic Stamping Press,FDR_02,HYDRAULIC_PRESS,100.0,99.8,NORMAL,Operating parameters within standard manufacturer tolerance.,39.95,1.26,0.14,-0.93

@@ -1,0 +1,181 @@
+import os
+import subprocess
+
+os.makedirs("docs/diagrams", exist_ok=True)
+
+# 1. OPTIMIZED PHYSICAL ARCHITECTURE
+physical_dot = """digraph PhysicalArchitecture {
+    graph [
+        rankdir="TB",
+        nodesep=0.25,
+        ranksep=0.45,
+        bgcolor="white",
+        dpi=300,
+        fontname="Arial",
+        compound=true,
+        pad="0.5,0.5"
+    ];
+    
+    node [
+        fontname="Arial",
+        fontsize=10.5,
+        shape="box",
+        style="filled,rounded",
+        margin="0.20,0.14",
+        penwidth=1.5
+    ];
+    
+    edge [
+        fontname="Arial",
+        fontsize=9.5,
+        color="#2B6CB0",
+        penwidth=1.6,
+        arrowsize=0.85
+    ];
+
+    // ==========================================
+    // SUBSTATION & INCOMER
+    // ==========================================
+    GRID [
+        label=<<B><FONT POINT-SIZE="12">11 kV Utility Grid - 3 Phase 50 Hz</FONT></B>>,
+        fillcolor="#EBF8FF",
+        color="#3182CE",
+        width=5.8
+    ];
+
+    TR [
+        label=<<B><FONT POINT-SIZE="11.5">1000 kVA Transformer - 11 kV / 415 V</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#2D3748">800 kVA Contracted Demand Cap</FONT>>,
+        fillcolor="#FEFCBF",
+        color="#D69E2E",
+        width=5.8
+    ];
+
+    M00 [
+        label=<<B><FONT POINT-SIZE="11.5">Meter M00: Main Bus Incomer - 3 CTs 1600/5A</FONT></B>>,
+        fillcolor="#E6FFFA",
+        color="#319795",
+        width=5.8
+    ];
+
+    BUS [
+        label=<<B><FONT POINT-SIZE="12.5">Main 415V Distribution Bus BUS_A - 1600A ACB</FONT></B>>,
+        shape="box",
+        style="filled",
+        fillcolor="#2D3748",
+        fontcolor="white",
+        color="#1A202C",
+        width=12.2,
+        height=0.45
+    ];
+
+    GRID -> TR;
+    TR -> M00;
+    M00 -> BUS [penwidth=2.5, color="#1A202C"];
+
+    // ==========================================
+    // 7 FEEDERS, METERS & EQUIPMENT
+    // ==========================================
+    subgraph cluster_subdistribution {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.2;
+        label=<<B><FONT POINT-SIZE="11.5" COLOR="#1A365D">Shop Floor Sub-Distribution &amp; Sub-Metering Layer (Tier-2 Turnkey Hardware)</FONT></B>>;
+        margin=20;
+
+        // Feeders Row
+        FDR01 [label=<<B>Feeder FDR_01: 100A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">50 mm<SUP>2</SUP> Cu XLPE 45m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR02 [label=<<B>Feeder FDR_02: 80A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">35 mm<SUP>2</SUP> Cu XLPE 60m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR03 [label=<<B>Feeder FDR_03: 40A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">16 mm<SUP>2</SUP> Cu XLPE 35m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR04 [label=<<B>Feeder FDR_04: 63A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">25 mm<SUP>2</SUP> Cu XLPE 50m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR05 [label=<<B>Feeder FDR_05: 250A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">150 mm<SUP>2</SUP> Cu XLPE 25m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR06 [label=<<B>Feeder FDR_06: 32A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">10 mm<SUP>2</SUP> Cu XLPE 70m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+        FDR07 [label=<<B>Feeder FDR_07: 40A MCCB</B><BR/><FONT POINT-SIZE="9" COLOR="#4A5568">16 mm<SUP>2</SUP> Cu XLPE 80m</FONT>>, fillcolor="#EDF2F7", color="#A0AEC0"];
+
+        // Meters Row
+        M01 [label=<<B>Meter M01: 3 CTs 200/5A</B><BR/><FONT POINT-SIZE="9" COLOR="#234E52">+ Temp T1 + Vibration V1</FONT>>, fillcolor="#E6FFFA", color="#319795"];
+        M02 [label=<<B>Meter M02: 3 CTs 150/5A</B><BR/><FONT POINT-SIZE="9" COLOR="#234E52">+ Vibration V2</FONT>>, fillcolor="#E6FFFA", color="#319795"];
+        M03 [label=<<B>Meter M03: 3 CTs 100/5A</B>>, fillcolor="#E6FFFA", color="#319795"];
+        M04 [label=<<B>Meter M04: 3 CTs 150/5A</B>>, fillcolor="#E6FFFA", color="#319795"];
+        M05 [label=<<B>Meter M05: 3 CTs 400/5A</B><BR/><FONT POINT-SIZE="9" COLOR="#234E52">+ Temp T2</FONT>>, fillcolor="#E6FFFA", color="#319795"];
+        M06 [label=<<B>Meter M06: 3 CTs 100/5A</B>>, fillcolor="#E6FFFA", color="#319795"];
+        M07 [label=<<B>Meter M07: 3 CTs 100/5A</B>>, fillcolor="#E6FFFA", color="#319795"];
+
+        // Equipment Row
+        EQ01 [label=<<B>CNC Machining Center</B><BR/><FONT POINT-SIZE="9.5" COLOR="#1A365D">MOTOR_01 - 75 kW</FONT>>, fillcolor="#EBF8FF", color="#3182CE"];
+        EQ02 [label=<<B>Hydraulic Stamping Press</B><BR/><FONT POINT-SIZE="9.5" COLOR="#1A365D">MOTOR_02 - 55 kW</FONT>>, fillcolor="#EBF8FF", color="#3182CE"];
+        EQ03 [label=<<B>Chilled Water Circulation Pump</B><BR/><FONT POINT-SIZE="9.5" COLOR="#4A5568">PUMP_01 - 30 kW</FONT>>, fillcolor="#EDF2F7", color="#718096"];
+        EQ04 [label=<<B>Rotary Screw Air Compressor</B><BR/><FONT POINT-SIZE="9.5" COLOR="#4A5568">COMP_01 - 45 kW</FONT>>, fillcolor="#EDF2F7", color="#718096"];
+        EQ05 [label=<<B>Induction Billet Heating Furnace</B><BR/><FONT POINT-SIZE="9.5" COLOR="#9C4221">FURNACE_01 - 160 kW</FONT>>, fillcolor="#FEEBC8", color="#DD6B20"];
+        EQ06 [label=<<B>Conveyor &amp; Assembly Line</B><BR/><FONT POINT-SIZE="9.5" COLOR="#1A365D">LINE_01 - 22 kW</FONT>>, fillcolor="#EBF8FF", color="#3182CE"];
+        EQ07 [label=<<B>Plant Utilities &amp; Lighting</B><BR/><FONT POINT-SIZE="9.5" COLOR="#4A5568">AUX_01 - 25 kW</FONT>>, fillcolor="#EDF2F7", color="#718096"];
+
+        { rank=same; FDR01; FDR02; FDR03; FDR04; FDR05; FDR06; FDR07; }
+        { rank=same; M01; M02; M03; M04; M05; M06; M07; }
+        { rank=same; EQ01; EQ02; EQ03; EQ04; EQ05; EQ06; EQ07; }
+    }
+
+    // Bus to Feeders
+    BUS -> FDR01;
+    BUS -> FDR02;
+    BUS -> FDR03;
+    BUS -> FDR04;
+    BUS -> FDR05;
+    BUS -> FDR06;
+    BUS -> FDR07;
+
+    // Feeders to Meters
+    FDR01 -> M01;
+    FDR02 -> M02;
+    FDR03 -> M03;
+    FDR04 -> M04;
+    FDR05 -> M05;
+    FDR06 -> M06;
+    FDR07 -> M07;
+
+    // Meters to Equipment
+    M01 -> EQ01;
+    M02 -> EQ02;
+    M03 -> EQ03;
+    M04 -> EQ04;
+    M05 -> EQ05;
+    M06 -> EQ06;
+    M07 -> EQ07;
+
+    // ==========================================
+    // PROCESS & OUTPUT (Outside cluster with rank separation)
+    // ==========================================
+    PROC [
+        label=<<B><FONT POINT-SIZE="12">Factory Manufacturing Process - Transmission Components</FONT></B>>,
+        fillcolor="#F0FFF4",
+        color="#38A169",
+        penwidth=1.8,
+        width=8.0
+    ];
+
+    OUT [
+        label=<<B><FONT POINT-SIZE="12.5">Finished Production Output - 131,324.1 Units / Month</FONT></B>>,
+        fillcolor="#C6F6D5",
+        color="#22543D",
+        penwidth=2.2,
+        width=8.0
+    ];
+
+    EQ01 -> PROC [color="#38A169", penwidth=1.8];
+    EQ02 -> PROC [color="#38A169", penwidth=1.8];
+    EQ05 -> PROC [color="#38A169", penwidth=1.8];
+    EQ06 -> PROC [color="#38A169", penwidth=1.8];
+
+    // Invisible center guide to cleanly pull PROC below EQ row without cluster border clipping
+    EQ04 -> PROC [style="invis", weight=8];
+
+    PROC -> OUT [color="#22543D", penwidth=2.5];
+}
+"""
+
+with open("scratch/physical.dot", "w", encoding="utf-8") as f:
+    f.write(physical_dot)
+
+subprocess.run(["dot", "-Tsvg", "scratch/physical.dot", "-o", "docs/diagrams/physical_architecture.svg"], check=True)
+subprocess.run(["dot", "-Tpng", "-Gdpi=300", "scratch/physical.dot", "-o", "docs/diagrams/physical_architecture.png"], check=True)
+print("Physical architecture generated successfully.")

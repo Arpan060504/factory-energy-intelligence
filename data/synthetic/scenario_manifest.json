@@ -1,0 +1,68 @@
+{
+  "dataset_name": "Apex Precision Components Ltd. - Synthetic Time-Series",
+  "generated_at": "2026-09-27T23:31:47.174580",
+  "total_records": 60480,
+  "days": 30,
+  "interval_minutes": 5,
+  "random_seed": 42,
+  "machines": [
+    "MOTOR_01",
+    "MOTOR_02",
+    "PUMP_01",
+    "COMP_01",
+    "FURNACE_01",
+    "LINE_01",
+    "AUX_01"
+  ],
+  "scenarios": [
+    {
+      "id": "SCENARIO_1",
+      "name": "Motor Efficiency Degradation",
+      "machine_id": "MOTOR_01",
+      "window": "Day 7 to Day 10",
+      "symptoms": "Power +16%, Temp +15C, Vibration > 4.5 mm/s, Production constant"
+    },
+    {
+      "id": "SCENARIO_2",
+      "name": "Excessive Compressor Idle Operation",
+      "machine_id": "COMP_01",
+      "window": "Day 12 to Day 16",
+      "symptoms": "Continuous unloaded run (22.5 kW) during breaks and night hours"
+    },
+    {
+      "id": "SCENARIO_3",
+      "name": "Low Power Factor Event",
+      "machine_id": "MOTOR_02, COMP_01",
+      "window": "Day 18 to Day 20",
+      "symptoms": "PF drops to 0.71, Apparent power surges, kVA penalty risk"
+    },
+    {
+      "id": "SCENARIO_4",
+      "name": "Three-Phase Current Imbalance",
+      "machine_id": "PUMP_01",
+      "window": "Day 21 to Day 23",
+      "symptoms": "Phase R/Y/B currents diverge, Imbalance > 28% (NEMA)"
+    },
+    {
+      "id": "SCENARIO_5",
+      "name": "Abnormal Energy Consumption",
+      "machine_id": "FURNACE_01",
+      "window": "Day 24 to Day 27",
+      "symptoms": "Actual active power +23% above expected baseline (refractory wear)"
+    },
+    {
+      "id": "SCENARIO_6",
+      "name": "Inefficient Production Scheduling",
+      "machine_id": "FURNACE_01",
+      "window": "Day 14 to Day 28",
+      "symptoms": "160 kW thermal batch scheduled in Peak tariff slot (18:00 - 22:00)"
+    },
+    {
+      "id": "SCENARIO_7",
+      "name": "Machine Degradation Compound Failure",
+      "machine_id": "MOTOR_02",
+      "window": "Day 27 to Day 29",
+      "symptoms": "Current +15%, Temp +19C, Vibration 5.4 mm/s (hydraulic cavitation)"
+    }
+  ]
+}

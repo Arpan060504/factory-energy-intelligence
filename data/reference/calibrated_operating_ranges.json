@@ -1,0 +1,28 @@
+{
+  "INDUCTION_MOTOR": {
+    "voltage_median_v": 10862.1,
+    "voltage_p05_v": 10694.7,
+    "voltage_p95_v": 11029.7,
+    "current_median_a": 162.9,
+    "current_p95_a": 208.8,
+    "power_factor_median": 0.76,
+    "power_factor_p05": 0.736,
+    "power_factor_p95": 0.784,
+    "current_imbalance_median_pct": 2.59,
+    "feeder_loss_median_pct": 1.35,
+    "equipment_temp_median_c": 42.9
+  },
+  "PROCESS_LOAD": {
+    "voltage_median_v": 10724.7,
+    "voltage_p05_v": 10540.1,
+    "voltage_p95_v": 10909.6,
+    "current_median_a": 120.0,
+    "current_p95_a": 160.2,
+    "power_factor_median": 0.861,
+    "power_factor_p05": 0.835,
+    "power_factor_p95": 0.885,
+    "current_imbalance_median_pct": 2.94,
+    "feeder_loss_median_pct": 1.97,
+    "equipment_temp_median_c": 40.6
+  }
+}

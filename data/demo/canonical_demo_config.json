@@ -1,0 +1,174 @@
+{
+  "demo_metadata": {
+    "title": "Factory Energy Intelligence & Process Optimization Platform - Canonical Hackathon Demo",
+    "facility": "Apex Precision Components Ltd.",
+    "location": "Bhosari Industrial Estate, Pune, Maharashtra",
+    "industry": "Automotive Tier-2 Precision Machining & Stamping",
+    "sanctioned_contract_demand_kva": 800.0,
+    "transformer_kva": 1000.0,
+    "grid_tariff": {
+      "off_peak_inr": 5.20,
+      "normal_inr": 7.80,
+      "peak_inr": 11.50,
+      "demand_charge_inr_per_kva": 450.00,
+      "grid_co2_kg_per_kwh": 0.716
+    }
+  },
+  "step_1_normal_operation": {
+    "date": "2026-03-03",
+    "timestamp_range": "2026-03-03 00:00:00 to 2026-03-03 23:55:00",
+    "description": "Standard production day operating within calibrated baseline bounds.",
+    "plant_metrics": {
+      "active_energy_kwh": 7309.1,
+      "expected_energy_kwh": 7321.7,
+      "energy_deviation_kwh": -12.6,
+      "energy_deviation_pct": -0.17,
+      "production_units": 5251.0,
+      "sec_kwh_per_unit": 1.3919,
+      "daily_cost_inr": 57010.98,
+      "daily_carbon_mt_co2": 5.233
+    },
+    "status": "NORMAL"
+  },
+  "step_2_energy_anomaly": {
+    "date": "2026-03-09",
+    "timestamp_range": "2026-03-09 00:00:00 to 2026-03-09 23:55:00",
+    "description": "Factory-wide electricity consumption surges above production-expected baseline.",
+    "plant_metrics": {
+      "active_energy_kwh": 7527.9,
+      "expected_energy_kwh": 7344.2,
+      "energy_deviation_kwh": 183.7,
+      "energy_deviation_pct": 2.50,
+      "production_units": 5272.2,
+      "sec_kwh_per_unit": 1.4279,
+      "daily_cost_inr": 58717.62,
+      "daily_carbon_mt_co2": 5.390
+    },
+    "alert_headline": "Plant Energy Consumption is +183.7 kWh (+2.5%) above expected baseline with constant production."
+  },
+  "step_3_find_machine": {
+    "drill_down_hierarchy": {
+      "factory": "Apex Precision Components Ltd. (+183.7 kWh excess)",
+      "substation": "SUB_01 (11kV / 415V 1000 kVA Transformer TR_01)",
+      "bus": "BUS_A (Main 415V 1600A Bus)",
+      "feeder": "FDR_01 (CNC Machining Feeder)",
+      "machine_id": "MOTOR_01",
+      "machine_name": "CNC Machining Center (75 kW)"
+    },
+    "machine_evidence": {
+      "normal_day": {
+        "active_power_kw_avg": 52.7,
+        "expected_power_kw_avg": 52.8,
+        "energy_kwh": 1264.4,
+        "expected_energy_kwh": 1267.2,
+        "average_current_a": 84.2,
+        "power_factor": 0.908,
+        "vibration_rms_mm_s": 1.49,
+        "bearing_temp_c": 42.1,
+        "production_units": 827.3,
+        "sec_kwh_per_unit": 1.5284
+      },
+      "anomalous_day": {
+        "active_power_kw_avg": 60.9,
+        "expected_power_kw_avg": 53.0,
+        "energy_kwh": 1460.8,
+        "expected_energy_kwh": 1272.7,
+        "energy_deviation_kwh": 188.1,
+        "energy_deviation_pct": 14.78,
+        "average_current_a": 97.2,
+        "current_increase_pct": 15.44,
+        "power_factor": 0.904,
+        "vibration_rms_mm_s": 3.99,
+        "vibration_increase_pct": 167.79,
+        "bearing_temp_c": 53.9,
+        "temperature_rise_c": 11.8,
+        "production_units": 831.9,
+        "production_change_pct": 0.56,
+        "sec_kwh_per_unit": 1.7560,
+        "sec_degradation_pct": 14.89
+      }
+    }
+  },
+  "step_4_explain_why": {
+    "machine_id": "MOTOR_01",
+    "evidence_summary": [
+      {"parameter": "Active Power", "baseline": "52.8 kW", "observed": "60.9 kW", "deviation": "+14.8% above expected"},
+      {"parameter": "Average Current", "baseline": "84.2 A", "observed": "97.2 A", "deviation": "+15.4% draw"},
+      {"parameter": "Bearing Vibration RMS", "baseline": "1.49 mm/s", "observed": "3.99 mm/s", "deviation": "+167.8% (Exceeds ISO 10816-3 2.8 mm/s limit)"},
+      {"parameter": "Bearing Temperature", "baseline": "42.1 °C", "observed": "53.9 °C", "deviation": "+11.8 °C thermal rise"},
+      {"parameter": "Production Throughput", "baseline": "827.3 units", "observed": "831.9 units", "deviation": "+0.6% (Strictly Unchanged)"},
+      {"parameter": "Feeder SEC", "baseline": "1.5284 kWh/u", "observed": "1.7560 kWh/u", "deviation": "+14.9% efficiency loss"}
+    ],
+    "diagnosis": "Mechanical bearing race wear and shaft misalignment causing parasitic friction load.",
+    "diagnostic_confidence": "HIGH (Triangulated across 4 physical sensor channels)"
+  },
+  "step_5_actionable_recommendation": {
+    "rec_id": "REC-001",
+    "title": "Mechanical Health Restoration & Lubrication Servicing",
+    "target_asset": "MOTOR_01 (FDR_01 - CNC Machining Center)",
+    "what_happened": "Motor MOTOR_01 is drawing +14.8% excess active power and +15.4% current while throughput is unchanged, driving feeder SEC up by +14.9%.",
+    "why": "Elevated vibration (3.99 mm/s RMS) and +11.8°C thermal rise indicate mechanical bearing friction and shaft misalignment, without electrical phase imbalance.",
+    "recommended_action": "1. Schedule drive-end bearing regreasing during next shift handover.\n2. Verify laser shaft alignment and belt tension.\n3. Clean motor stator cooling intake cowl.",
+    "expected_impact": {
+      "monthly_energy_saving_kwh": 3473.0,
+      "monthly_cost_saving_inr": 29520.0,
+      "monthly_carbon_avoided_mt": 2.48,
+      "estimated_payback_days": 2.0
+    }
+  },
+  "step_6_optimization_results": {
+    "facility_30d_master": {
+      "baseline": {
+        "energy_kwh": 191138.7,
+        "production_units": 131324.1,
+        "sec_kwh_per_unit": 1.4555,
+        "electricity_cost_inr": 1940445.85,
+        "peak_demand_kva": 462.7,
+        "carbon_emissions_mt_co2": 136.855
+      },
+      "optimized": {
+        "energy_kwh": 159165.7,
+        "production_units": 131324.1,
+        "sec_kwh_per_unit": 1.2120,
+        "electricity_cost_inr": 1578857.46,
+        "peak_demand_kva": 450.1,
+        "carbon_emissions_mt_co2": 113.963
+      },
+      "impact": {
+        "energy_reduction_kwh": 31973.1,
+        "energy_reduction_pct": 16.73,
+        "production_change_units": 0.0,
+        "production_constraint_satisfied": true,
+        "sec_improvement_pct": 16.73,
+        "cost_reduction_inr": 361588.39,
+        "cost_reduction_pct": 18.63,
+        "peak_demand_reduction_kva": 12.6,
+        "emissions_avoided_mt_co2": 22.893
+      }
+    },
+    "savings_waterfall": {
+      "energy_kwh": [
+        {"step": "Baseline Total", "kwh": 191138.7, "delta": 0.0, "type": "total"},
+        {"step": "Idle Energy Elimination", "kwh": 162638.7, "delta": -28500.0, "type": "reduction"},
+        {"step": "Mechanical Restoration", "kwh": 159165.7, "delta": -3473.0, "type": "reduction"},
+        {"step": "TOD Tariff Shifting", "kwh": 159165.7, "delta": 0.0, "type": "neutral"},
+        {"step": "Optimized Total", "kwh": 159165.7, "delta": 0.0, "type": "total"}
+      ],
+      "cost_inr": [
+        {"step": "Baseline Electricity Bill", "cost": 1940446.0, "delta": 0.0, "type": "total"},
+        {"step": "Idle Reduction (kWh)", "cost": 1701996.0, "delta": -238450.0, "type": "reduction"},
+        {"step": "Mechanical Efficiency (kWh)", "cost": 1672476.0, "delta": -29520.0, "type": "reduction"},
+        {"step": "TOD Load Shifting (₹/kWh)", "cost": 1578857.0, "delta": -93619.0, "type": "reduction"},
+        {"step": "Optimized Total Bill", "cost": 1578857.0, "delta": 0.0, "type": "total"}
+      ]
+    },
+    "business_roi": {
+      "turnkey_capex_inr": 152150.0,
+      "annual_software_saas_inr": 36000.0,
+      "monthly_net_saving_inr": 358588.39,
+      "instantaneous_payback_days": 12.7,
+      "phased_payback_months": "1.8 - 3.5 months",
+      "year_1_net_roi_inr": 4150910.68
+    }
+  }
+}

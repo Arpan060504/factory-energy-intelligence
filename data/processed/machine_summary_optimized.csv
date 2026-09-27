@@ -1,0 +1,8 @@
+machine_id,machine_name,feeder_id,machine_type,total_energy_kwh,total_production_units,sec_kwh_per_unit,total_cost_inr,peak_power_kw,max_demand_kva,avg_power_factor,avg_imbalance_pct,idle_energy_kwh,idle_energy_pct,estimated_cable_loss_kwh,estimated_cable_loss_pct,operating_hours,idle_hours
+FURNACE_01,Induction Billet Heating Furnace,FDR_05,INDUCTION_FURNACE,80005.6,44702.8,1.7897,809697.18,191.3,210.8,0.853,1.18,250.0,0.3,241.74,0.3,568.8,31.2
+MOTOR_01,CNC Machining Center,FDR_01,CNC_MACHINING,31070.3,20722.5,1.4993,537463.98,83.0,95.9,0.803,1.17,590.6,1.9,322.4,1.04,468.8,131.2
+MOTOR_02,Hydraulic Stamping Press,FDR_02,HYDRAULIC_PRESS,18188.1,43426.1,0.4188,446645.79,60.4,78.3,0.75,1.17,693.8,3.8,149.01,0.82,368.8,231.2
+COMP_01,Rotary Screw Air Compressor,FDR_04,AIR_COMPRESSOR,10422.9,263.5,39.5556,345712.64,43.5,61.5,0.796,1.18,31.5,0.3,207.59,1.99,581.0,26.2
+LINE_01,Conveyor & Final Assembly Line,FDR_06,CONVEYOR_LINE,7143.6,21759.9,0.3283,330110.74,21.3,25.5,0.753,1.17,231.2,3.2,156.59,2.19,368.8,231.2
+PUMP_01,Chilled Water Circulation Pump,FDR_03,COOLING_PUMP,7033.9,273.2,25.7445,312937.5,28.8,34.0,0.835,4.55,75.7,1.1,219.55,3.12,568.8,151.2
+AUX_01,"Plant Utilities, Exhaust & Lighting",FDR_07,UTILITY_AUX,5301.3,176.0,30.1141,302663.76,23.9,26.6,0.842,1.18,1053.8,19.9,156.17,2.95,368.8,351.2

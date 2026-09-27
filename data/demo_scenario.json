@@ -1,0 +1,182 @@
+{
+  "scenario_metadata": {
+    "title": "Factory Energy Intelligence & Process Optimization Platform - Canonical Hackathon Demo",
+    "facility_name": "Apex Precision Components Ltd.",
+    "facility_type": "Automotive Tier-2 Precision Machining & Stamping SME",
+    "location": "Bhosari Industrial Estate, Pune, Maharashtra, India",
+    "grid_connection": {
+      "utility": "MSEDCL",
+      "supply_voltage_kv": 11.0,
+      "transformer_rating_kva": 1000.0,
+      "transformer_vector_group": "Dyn11",
+      "secondary_voltage_v": 415.0,
+      "sanctioned_contract_demand_kva": 800.0
+    },
+    "simulation_window_days": 30,
+    "telemetry_interval_minutes": 5,
+    "total_telemetry_records": 60480,
+    "random_seed": 42
+  },
+  "tariff_and_grid_parameters": {
+    "off_peak_rate_inr_per_kwh": 5.20,
+    "normal_rate_inr_per_kwh": 7.80,
+    "peak_rate_inr_per_kwh": 11.50,
+    "peak_to_offpeak_differential_inr": 6.30,
+    "tod_slots": {
+      "off_peak": "22:00 - 06:00 (8 hours)",
+      "normal": "06:00 - 18:00 (12 hours)",
+      "peak": "18:00 - 22:00 (4 hours)"
+    },
+    "grid_emission_factor_kg_co2_per_kwh": 0.716,
+    "emission_source": "Central Electricity Authority (CEA) India CO2 Baseline Database Version 19"
+  },
+  "canonical_metrics": {
+    "baseline": {
+      "energy_kwh": 191138.7,
+      "production_units": 131324.1,
+      "sec_kwh_per_unit": 1.4555,
+      "electricity_cost_inr": 1940445.85,
+      "peak_demand_kva": 462.7,
+      "peak_demand_utilization_pct": 57.84,
+      "carbon_emissions_mt_co2": 136.855,
+      "off_peak_energy_kwh": 55297.09,
+      "normal_energy_kwh": 101478.91,
+      "peak_energy_kwh": 34362.74,
+      "off_peak_cost_inr": 287544.87,
+      "normal_cost_inr": 791535.47,
+      "peak_cost_inr": 395171.54,
+      "fixed_demand_charge_inr": 466193.97
+    },
+    "optimized": {
+      "energy_kwh": 159165.7,
+      "production_units": 131324.1,
+      "sec_kwh_per_unit": 1.2120,
+      "electricity_cost_inr": 1578857.46,
+      "peak_demand_kva": 450.1,
+      "peak_demand_utilization_pct": 56.26,
+      "carbon_emissions_mt_co2": 113.963,
+      "off_peak_energy_kwh": 55683.13,
+      "normal_energy_kwh": 86925.42,
+      "peak_energy_kwh": 16557.15,
+      "off_peak_cost_inr": 289552.25,
+      "normal_cost_inr": 678018.27,
+      "peak_cost_inr": 190407.16,
+      "fixed_demand_charge_inr": 420879.78
+    },
+    "impact": {
+      "energy_reduction_kwh": 31973.1,
+      "energy_reduction_pct": 16.73,
+      "production_change_units": 0.0,
+      "production_change_pct": 0.0,
+      "production_constraint_satisfied": true,
+      "sec_improvement_kwh_per_unit": 0.2435,
+      "sec_improvement_pct": 16.73,
+      "cost_reduction_inr": 361588.39,
+      "cost_reduction_pct": 18.63,
+      "peak_demand_reduction_kva": 12.6,
+      "peak_demand_reduction_pct": 2.72,
+      "emissions_avoided_mt_co2": 22.893,
+      "idle_energy_saved_kwh": 31973.2,
+      "idle_cost_saved_inr": 267969.71,
+      "tariff_shifted_kwh": 12997.8,
+      "tariff_shift_cost_saved_inr": 93618.68
+    }
+  },
+  "turnkey_hardware_bom": {
+    "total_capex_inr": 152150.0,
+    "items": [
+      {
+        "item": "3-Phase Digital Smart Energy Meters (RS485 Modbus RTU, Class 1.0)",
+        "quantity": 8,
+        "unit_cost_inr": 6500.0,
+        "total_cost_inr": 52000.0
+      },
+      {
+        "item": "Class 0.5S Split-Core Current Transformers (100A-400A)",
+        "quantity": 24,
+        "unit_cost_inr": 850.0,
+        "total_cost_inr": 20400.0
+      },
+      {
+        "item": "Industrial DIN-Rail Edge IoT Gateway (Quad-core, RS485/Ethernet/WiFi/MQTT)",
+        "quantity": 1,
+        "unit_cost_inr": 22000.0,
+        "total_cost_inr": 22000.0
+      },
+      {
+        "item": "Surface Temperature (PT100) & 3-Axis Vibration Sensors",
+        "quantity": 4,
+        "unit_cost_inr": 4500.0,
+        "total_cost_inr": 18000.0
+      },
+      {
+        "item": "IP65 Control Enclosure, Shielded Twisted-Pair RS485 Cabling, Power Supplies",
+        "quantity": 1,
+        "unit_cost_inr": 24750.0,
+        "total_cost_inr": 24750.0
+      },
+      {
+        "item": "Installation, Wiring, CT Ratio Setup & Calibration Commissioning",
+        "quantity": 1,
+        "unit_cost_inr": 15000.0,
+        "total_cost_inr": 15000.0
+      }
+    ]
+  },
+  "business_and_payback_metrics": {
+    "turnkey_capex_inr": 152150.0,
+    "annual_software_saas_inr": 36000.0,
+    "monthly_software_saas_inr": 3000.0,
+    "monthly_gross_savings_inr": 361588.39,
+    "monthly_net_savings_inr": 358588.39,
+    "instantaneous_simple_payback_days": 12.7,
+    "instantaneous_simple_payback_months": 0.42,
+    "phased_operational_payback_months": "1.8 - 3.5 months",
+    "year_1_net_roi_inr": 4150910.68,
+    "year_1_roi_multiple": 27.3
+  },
+  "seven_step_narrative_mapping": [
+    {
+      "step": 1,
+      "name": "MEASURE",
+      "action": "Feeder-level 3-phase high-resolution telemetry (5-min intervals)",
+      "evidence": "8 digital meters capturing V, I, kW, kVA, PF, and cable I2R losses across 7 plant feeders."
+    },
+    {
+      "step": 2,
+      "name": "UNDERSTAND",
+      "action": "Ridge Regression Expected Energy Baseline (R2 = 0.985)",
+      "evidence": "Normalizes dynamic electricity draw against variable production throughput."
+    },
+    {
+      "step": 3,
+      "name": "DETECT",
+      "action": "Multi-variable statistical & physics-based anomaly detection",
+      "evidence": "6 fault modes detected with 100% recall; 44,564 raw alerts clustered into 447 operational incidents."
+    },
+    {
+      "step": 4,
+      "name": "DIAGNOSE",
+      "action": "Automated root-cause triage engine",
+      "evidence": "Distinguishes electrical contactor degradation, mechanical bearing friction, and sensor loss."
+    },
+    {
+      "step": 5,
+      "name": "RECOMMEND",
+      "action": "Rule-based actionable SOP generator",
+      "evidence": "Prioritizes maintenance and operational actions ranked by financial impact (INR/mo) and simple payback."
+    },
+    {
+      "step": 6,
+      "name": "OPTIMIZE",
+      "action": "Three-tier algorithmic optimization",
+      "evidence": "Eliminates idle energy, shifts flexible loads from peak to off-peak, and restores mechanical health under strict production invariance."
+    },
+    {
+      "step": 7,
+      "name": "VERIFY",
+      "action": "Audited Before vs After verification",
+      "evidence": "Guarantees 100.0% production preservation while achieving 16.73% SEC reduction and 18.63% cost reduction."
+    }
+  ]
+}

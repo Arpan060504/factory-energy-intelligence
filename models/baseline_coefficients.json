@@ -1,0 +1,65 @@
+{
+  "AUX_01": {
+    "machine_id": "AUX_01",
+    "intercept_kw": 14.45,
+    "coef_running_kw": 6.447,
+    "coef_idle_kw": -6.447,
+    "coef_production_rate": -0.0276,
+    "r2_score": 0.9777,
+    "rmse_kw": 0.973
+  },
+  "COMP_01": {
+    "machine_id": "COMP_01",
+    "intercept_kw": 1.343,
+    "coef_running_kw": 36.17,
+    "coef_idle_kw": 15.12,
+    "coef_production_rate": 0.0472,
+    "r2_score": 0.9782,
+    "rmse_kw": 2.122
+  },
+  "FURNACE_01": {
+    "machine_id": "FURNACE_01",
+    "intercept_kw": 8.121,
+    "coef_running_kw": 1.936,
+    "coef_idle_kw": 26.8,
+    "coef_production_rate": 1.5723,
+    "r2_score": 0.9961,
+    "rmse_kw": 3.285
+  },
+  "LINE_01": {
+    "machine_id": "LINE_01",
+    "intercept_kw": 1.102,
+    "coef_running_kw": 0.907,
+    "coef_idle_kw": 4.899,
+    "coef_production_rate": 0.2776,
+    "r2_score": 0.9965,
+    "rmse_kw": 0.43
+  },
+  "MOTOR_01": {
+    "machine_id": "MOTOR_01",
+    "intercept_kw": 4.616,
+    "coef_running_kw": 5.741,
+    "coef_idle_kw": 13.376,
+    "coef_production_rate": 1.1829,
+    "r2_score": 0.9946,
+    "rmse_kw": 1.806
+  },
+  "MOTOR_02": {
+    "machine_id": "MOTOR_02",
+    "intercept_kw": 3.109,
+    "coef_running_kw": -1.425,
+    "coef_idle_kw": 10.881,
+    "coef_production_rate": 0.3754,
+    "r2_score": 0.9976,
+    "rmse_kw": 0.896
+  },
+  "PUMP_01": {
+    "machine_id": "PUMP_01",
+    "intercept_kw": 18.516,
+    "coef_running_kw": 6.499,
+    "coef_idle_kw": -6.499,
+    "coef_production_rate": 0.0212,
+    "r2_score": 0.9257,
+    "rmse_kw": 1.454
+  }
+}

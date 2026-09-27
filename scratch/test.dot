@@ -1,0 +1,5 @@
+digraph G {
+    graph [bgcolor="transparent", dpi=300];
+    node [shape=box, style="filled,rounded", fillcolor="#ffffff", color="#333333", fontname="Helvetica"];
+    A -> B;
+}

@@ -1,0 +1,319 @@
+import os
+import subprocess
+
+os.makedirs("docs/diagrams", exist_ok=True)
+
+digital_dot = """digraph DigitalArchitecture {
+    graph [
+        rankdir="TB",
+        nodesep=0.35,
+        ranksep=0.45,
+        bgcolor="white",
+        dpi=300,
+        fontname="Arial",
+        compound=true,
+        pad="0.5,0.5"
+    ];
+    
+    node [
+        fontname="Arial",
+        fontsize=10.5,
+        shape="box",
+        style="filled,rounded",
+        margin="0.22,0.14",
+        penwidth=1.4
+    ];
+    
+    edge [
+        fontname="Arial",
+        fontsize=9.5,
+        color="#2B6CB0",
+        penwidth=1.6,
+        arrowsize=0.85
+    ];
+
+    // ==========================================
+    // LAYER 1: PHYSICAL DATA SOURCES
+    // ==========================================
+    subgraph cluster_L1 {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.3;
+        label=<<B><FONT POINT-SIZE="12" COLOR="#1A365D">1. PHYSICAL DATA SOURCES - Retrofitted Instrumentation</FONT></B>>;
+        margin=16;
+
+        MTRS [
+            label=<<B>8 Digital Energy Meters - RS485 Modbus RTU</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">3-Phase Voltages, Phase Currents via 24 Split-Core CTs, Power Factor</FONT>>,
+            fillcolor="#E6FFFA",
+            color="#319795",
+            width=4.2
+        ];
+
+        SENS [
+            label=<<B>Physical Asset Sensors</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Surface Temperature PT100 RTDs, 3-Axis Vibration Velocity RMS</FONT>>,
+            fillcolor="#E6FFFA",
+            color="#319795",
+            width=4.2
+        ];
+
+        PROD_IN [
+            label=<<B>Production Data Feed</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Finished Component Count Q via Shopfloor Web Form / CSV</FONT>>,
+            fillcolor="#EDF2F7",
+            color="#4A5568",
+            width=4.2
+        ];
+
+        OPT_EXT [
+            label=<<B>Optional Enterprise Interfaces</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Existing PLC/SCADA via Modbus TCP, ERP/MES via REST API</FONT>>,
+            fillcolor="#EDF2F7",
+            color="#718096",
+            style="filled,rounded,dashed",
+            width=4.2
+        ];
+
+        { rank=same; MTRS; SENS; PROD_IN; OPT_EXT; }
+    }
+
+    // ==========================================
+    // LAYER 2: INDUSTRIAL EDGE GATEWAY
+    // ==========================================
+    subgraph cluster_L2 {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.3;
+        label=<<B><FONT POINT-SIZE="12" COLOR="#1A365D">2. INDUSTRIAL EDGE GATEWAY - WISE-710 / Linux Appliance</FONT></B>>;
+        margin=16;
+
+        ACQ [
+            label=<<B>Modbus / RS485 / Ethernet Master Polling Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">5-Min Telemetry</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=6.5
+        ];
+
+        VAL [
+            label=<<B>Data Cleaning &amp; Range Validation</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Bounds: 300V-480V, I &ge; 0, NaN Drop</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=6.5
+        ];
+
+        TRAP [
+            label=<<B>Sensor-Loss Trap</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">I_min &lt; 0.5A &amp; I_max &gt; 15A: Suppress False Alarms</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=6.5
+        ];
+
+        BUF [
+            label=<<B>Local Circular Ring Buffer</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">SQLite Storage: 45-Day Retention</FONT>>,
+            fillcolor="#FEFCBF",
+            color="#D69E2E",
+            width=6.5
+        ];
+
+        OFFLINE [
+            label=<<B>Autonomous Offline Operation</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Full Functionality during Internet Outages</FONT>>,
+            fillcolor="#FEFCBF",
+            color="#D69E2E",
+            width=6.5
+        ];
+
+        ACQ -> VAL;
+        VAL -> TRAP;
+        TRAP -> BUF;
+        BUF -> OFFLINE;
+    }
+
+    // Connect Layer 1 to Layer 2
+    MTRS -> ACQ;
+    SENS -> ACQ;
+    PROD_IN -> ACQ;
+    OPT_EXT -> ACQ [style="dashed", label="Optional Feed", color="#718096"];
+
+    // ==========================================
+    // LAYER 3: DATA & ANALYTICS LAYER
+    // ==========================================
+    subgraph cluster_L3 {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.3;
+        label=<<B><FONT POINT-SIZE="12" COLOR="#1A365D">3. DATA &amp; ANALYTICS ENGINE - Nine Processing Modules</FONT></B>>;
+        margin=16;
+
+        M1 [
+            label=<<B>Module 1: Electrical Energy Calculation</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">P, Q, S vectors, Discrete 5-min kWh integration, Cable I<SUP>2</SUP>R loss</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M2 [
+            label=<<B>Module 2: Production-Normalized Baseline</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Production-Normalized Expected Power &amp; Energy Envelopes</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M3 [
+            label=<<B>Module 3: Specific Energy Consumption SEC</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">SEC = kWh / Units Manufactured - Division-by-Zero Protected</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M4 [
+            label=<<B>Module 4: Anomaly Detection Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Statistical residuals &gt; 12%, NEMA unbalance, low PF, alert clustering</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M5 [
+            label=<<B>Module 5: Physical Diagnostic Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Triangulates electrical balance, thermal rise, and ISO 10816 vibration</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M6 [
+            label=<<B>Module 6: Time-of-Day Tariff Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">MSEDCL HT-1 slots: Off-Peak &#8377;5.20, Normal &#8377;7.80, Peak &#8377;11.50</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M7 [
+            label=<<B>Module 7: Three-Tier Optimization Solver</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Idle elimination + TOD peak load shifting + mechanical restoration</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M8 [
+            label=<<B>Module 8: Savings Verification Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Decouples physical energy delta from tariff economic arbitrage</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M9 [
+            label=<<B>Module 9: Carbon Accounting Engine</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">CEA India v19 grid emission factor: 0.716 kg CO2 / kWh</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=7.5
+        ];
+
+        M1 -> M2;
+        M2 -> M3;
+        M3 -> M4;
+        M4 -> M5;
+        M5 -> M6;
+        M6 -> M7;
+        M7 -> M8;
+        M8 -> M9;
+    }
+
+    OFFLINE -> M1 [color="#2B6CB0", penwidth=2.0];
+
+    // ==========================================
+    // LAYER 4: DECISION & ACTION LAYER
+    // ==========================================
+    subgraph cluster_L4 {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.3;
+        label=<<B><FONT POINT-SIZE="12" COLOR="#1A365D">4. DECISION &amp; ACTION SUPPORT LAYER - Operator Guidance</FONT></B>>;
+        margin=16;
+
+        DASH [
+            label=<<B><FONT POINT-SIZE="12">Streamlit Operations Cockpit</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#2D3748">Hackathon Demo Mode + Full 8-Page Diagnostic Platform</FONT>>,
+            fillcolor="#FEEBC8",
+            color="#DD6B20",
+            penwidth=1.8,
+            width=8.5
+        ];
+
+        ALERTS [
+            label=<<B>Diagnostic Energy Alerts</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Unexplained power surge, standby compressor idle waste, unbalance</FONT>>,
+            fillcolor="#FFF5F5",
+            color="#E53E3E",
+            width=5.5
+        ];
+
+        SOPS [
+            label=<<B>Actionable Maintenance SOPs</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">REC-001: Bearing regreasing &amp; laser alignment - Saves &#8377;29,520/mo</FONT>>,
+            fillcolor="#F0FFF4",
+            color="#38A169",
+            width=5.5
+        ];
+
+        SCHED [
+            label=<<B>Intelligent Production Scheduling Recommendations</B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Reschedule 160 kW furnace to night off-peak slot - Saves &#8377;93,619/mo</FONT>>,
+            fillcolor="#F0FFF4",
+            color="#38A169",
+            width=5.5
+        ];
+
+        DASH -> ALERTS;
+        DASH -> SOPS;
+        DASH -> SCHED;
+
+        { rank=same; ALERTS; SOPS; SCHED; }
+    }
+
+    M9 -> DASH [color="#2B6CB0", penwidth=2.0];
+
+    // ==========================================
+    // LAYER 5: VERIFICATION & AUDIT LAYER
+    // ==========================================
+    subgraph cluster_L5 {
+        style="filled,rounded";
+        color="#CBD5E0";
+        fillcolor="#F8FAFC";
+        penwidth=1.3;
+        label=<<B><FONT POINT-SIZE="12" COLOR="#1A365D">5. AUDITED VERIFICATION &amp; PRODUCTION GUARANTEE</FONT></B>>;
+        margin=16;
+
+        PROD_GUARD [
+            label=<<B><FONT POINT-SIZE="11.5">PRODUCTION CONSTRAINT AUDIT</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#276749">Baseline Output: 131,324.1 units | Optimized Output: 131,324.1 units<BR/><B>Constraint: &Delta;Q = 0.0 units - 100% PRESERVED, NEVER THROTTLED</B></FONT>>,
+            fillcolor="#C6F6D5",
+            color="#22543D",
+            penwidth=2.0,
+            width=11.5
+        ];
+
+        AUDIT_GRID [
+            label=<<B><FONT POINT-SIZE="11.5">Master Audited Before vs After Impact Grid</FONT></B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Active Energy: 191,139 to 159,166 kWh -16.73% &bull; Specific Energy SEC: 1.4555 to 1.2120 kWh/u -16.73%<BR/>Electricity Bill: &#8377;19,40,446 to &#8377;15,78,857 -18.63% &bull; Peak Demand Shaved: 462.7 to 450.1 kVA -12.6 kVA<BR/>Scope 2 Carbon: 136.85 to 113.96 MT CO2 -22.89 MT/mo</FONT>>,
+            fillcolor="#EBF8FF",
+            color="#3182CE",
+            width=11.5
+        ];
+
+        ROI_BOX [
+            label=<<B><FONT POINT-SIZE="11.5">SME Commercial Return on Investment</FONT></B><BR/><FONT POINT-SIZE="9" COLOR="#2D3748">Turnkey Capex: &#8377; 1,52,150 (~$1,830 USD) &bull; Instantaneous Payback: 12.7 Days (~13 Days)<BR/>Pragmatic Phased Industrial Payback: 1.8 to 3.5 Months &bull; Net Year-1 ROI: &#8377; 41,50,911 - 27.3x Capex Multiple</FONT>>,
+            fillcolor="#FEFCBF",
+            color="#D69E2E",
+            width=11.5
+        ];
+
+        PROD_GUARD -> AUDIT_GRID;
+        AUDIT_GRID -> ROI_BOX;
+    }
+
+    // Direct functional arrow and rank ordering between Layer 4 and Layer 5
+    DASH -> PROD_GUARD [color="#22543D", penwidth=2.2];
+    SOPS -> PROD_GUARD [style="invis", weight=15];
+}
+"""
+
+with open("scratch/digital.dot", "w", encoding="utf-8") as f:
+    f.write(digital_dot)
+
+subprocess.run(["dot", "-Tsvg", "scratch/digital.dot", "-o", "docs/diagrams/digital_architecture.svg"], check=True)
+subprocess.run(["dot", "-Tpng", "-Gdpi=300", "scratch/digital.dot", "-o", "docs/diagrams/digital_architecture.png"], check=True)
+print("Digital architecture generated.")

@@ -1,0 +1,4 @@
+digraph G {
+    node [shape=box, fontname="Arial"];
+    A [label=<50 mm<SUP>2</SUP> Cu XLPE 45m>];
+}

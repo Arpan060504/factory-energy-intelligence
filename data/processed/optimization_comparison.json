@@ -1,0 +1,47 @@
+{
+  "baseline": {
+    "energy_kwh": 191138.7,
+    "production_units": 131324.1,
+    "sec_kwh_per_unit": 1.4555,
+    "electricity_cost_inr": 1940445.85,
+    "peak_demand_kva": 462.7,
+    "carbon_emissions_kg_co2": 136855.34,
+    "carbon_emissions_mt_co2": 136.855,
+    "off_peak_cost_inr": 287544.87,
+    "normal_cost_inr": 791535.47,
+    "peak_cost_inr": 395171.54,
+    "off_peak_energy_kwh": 55297.09,
+    "normal_energy_kwh": 101478.91,
+    "peak_energy_kwh": 34362.74
+  },
+  "optimized": {
+    "energy_kwh": 159165.7,
+    "production_units": 131324.1,
+    "sec_kwh_per_unit": 1.212,
+    "electricity_cost_inr": 1578857.46,
+    "peak_demand_kva": 450.1,
+    "carbon_emissions_kg_co2": 113962.63,
+    "carbon_emissions_mt_co2": 113.963,
+    "off_peak_cost_inr": 289552.25,
+    "normal_cost_inr": 678018.27,
+    "peak_cost_inr": 190407.16
+  },
+  "impact": {
+    "energy_reduction_kwh": 31973.1,
+    "energy_reduction_pct": 16.73,
+    "sec_improvement_pct": 16.73,
+    "cost_reduction_inr": 361588.39,
+    "cost_reduction_pct": 18.63,
+    "peak_demand_reduction_kva": 12.7,
+    "peak_demand_reduction_pct": 2.73,
+    "emissions_avoided_kg_co2": 22892.7,
+    "emissions_avoided_mt_co2": 22.893,
+    "production_change_units": 0.0,
+    "production_constraint_satisfied": true,
+    "idle_energy_saved_kwh": 31973.2,
+    "idle_cost_saved_inr": 267969.71,
+    "tariff_shifted_kwh": 12997.8,
+    "tariff_shift_cost_saved_inr": 93618.68,
+    "peak_to_offpeak_differential_inr": 6.3
+  }
+}
